@@ -1,0 +1,280 @@
+
+##### 2 NESTED FORM IN RAILS #######
+
+1. rails new nested-forms -d postgresql
+2. rails g scaffold show name:string
+3. rails g model season number:integer show:references
+4. buka app\models\show.rb
+- asumsi show punya banyak sesason, berarti show has many season
+maka ubah show.rb dan tambahkan fungsi nested form untuk accepts attribut nested dari model show ke model seasons
+dengan menambahkan : 
+
+accepts_nested_attributes_for :seasons
+
+maka, ubah model show.rb :
+
+# models/show.rb
+class Show < ApplicationRecord
+end
+
+
+menjadi :
+
+# models/show.rb
+class Show < ApplicationRecord
+  has_many :seasons
+  accepts_nested_attributes_for :seasons
+end
+
+5. buka app\models\season.rb
+
+- asumsi objek season ini milik si show dan tambahkan optional true (karena pakai nested form):
+
+# maka ubah seasons.rb dari :
+
+
+class Season < ApplicationRecord
+  belongs_to :show
+end
+
+# menjadi 
+class Season < ApplicationRecord
+  belongs_to :show, optional: true
+end
+
+
+6. buka controllers/shows_controller.rb
+- pada syntax ini :
+
+# GET /shows/new
+  def new
+    @show = Show.new
+  end
+
+ubah menjadi :
+
+def new
+  @show = Show.new
+  @show.seasons.build
+end
+
+
+- pada syntax ini juga : 
+
+# Never trust parameters from the scary internet, only allow the white list through.
+    def show_params
+      params.require(:show).permit(:name)
+    end
+
+karena show mengacept nested attributes untuk season model sehingga, ubah menjadi :
+
+def show_params
+  params.require(:show).permit(:name, 
+    :seasons_attributes => [:number]
+  )
+end
+
+7. buka \app\views\shows\_form.html.erb
+
+- ubah ini : 
+
+
+<%= form_with(model: show, local: true) do |form| %>
+  <% if show.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(show.errors.count, "error") %> prohibited this show from being saved:</h2>
+
+      <ul>
+      <% show.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :show_name %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+
+- menjadi :
+
+<%= form_with(model: show, local: true) do |form| %>
+  <% if show.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(show.errors.count, "error") %> prohibited this show from being saved:</h2>
+
+      <ul>
+      <% show.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.fields_for :seasons do |s| %>
+    <%= s.label :number %>
+    <%= s.number_field :number %>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+
+##### END 2 NESTED FORM IN RAILS #######
+
+
+##### 3 NESTED FORM IN RAILS #######
+8. Untuk 3 Nested Form Masih Lanjutan 2 Nested form diatas.
+9. rails g model episode title:string season:references
+10. buka # models/season.rb
+ubah :
+
+class Season < ApplicationRecord
+  belongs_to :show, optional: true
+end
+
+
+- menjadi :
+
+# models/season.rb
+class Season < ApplicationRecord
+  belongs_to :show, optional: true
+  has_many :episodes
+  accepts_nested_attributes_for :episodes
+end
+
+11. buka # models/episode.rb
+
+ubah : 
+
+class Episode < ApplicationRecord
+  belongs_to :season
+end
+
+
+- menjadi :
+
+
+# models/episode.rb
+class Episode < ApplicationRecord
+  belongs_to :season, optional: true
+end
+
+12. buka controllers/shows_controller.rb
+
+- ubah :
+
+  def new
+    @show = Show.new
+    @show.seasons.build
+  end
+
+- menjadi :
+
+  def new
+    @show = Show.new
+    @show.seasons.build.episodes.build
+  end
+
+- dan ubah :
+
+    def show_params
+      params.require(:show).permit(:name, 
+        :seasons_attributes => [:number]
+        )
+    end
+
+- menjadi :
+
+def show_params
+    params.require(:show).permit(:name, 
+      :seasons_attributes => [:number,
+        :episodes_attributes => [:title]
+      ]
+    )
+  end
+
+
+13. buka app\views\shows\_form.html.erb
+
+# ubah :
+
+<%= form_with(model: show, local: true) do |form| %>
+  <% if show.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(show.errors.count, "error") %> prohibited this show from being saved:</h2>
+
+      <ul>
+      <% show.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= form.label :name %>
+<%= form.text_field :name %>
+
+  <%= form.fields_for :seasons do |s| %>
+    <%= s.label :number %>
+    <%= s.number_field :number %>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+# menjadi : 
+
+
+<%= form_with(model: show, local: true) do |form| %>
+<% if show.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(show.errors.count, "error") %> prohibited this show from being saved:</h2>
+
+  <ul>
+    <% show.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+
+<%= form.label :name %>
+<%= form.text_field :name %>
+
+
+<%= form.fields_for :seasons do |s| %>
+
+<%= s.label :number %>
+<%= s.number_field :number %>
+
+<%= s.fields_for :episodes do |e| %>
+<%= e.label :title %>
+<%= e.text_field :title %>
+<% end %>
+
+<% end %>
+
+
+<div class="actions">
+  <%= form.submit %>
+</div>
+<% end %>
+
+
+
+14. rails s -e development
+
+##### END 3 NESTED FORM IN RAILS #######

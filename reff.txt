@@ -1,0 +1,31 @@
+https://medium.com/@mindovermiles262/triple-nested-forms-in-rails-dedbcccb5799
+https://stackoverflow.com/questions/48366048/rendering-first-step-of-multistep-form-wizard-as-partial-in-another-controllers
+https://github.com/nerdcave/rails-multistep-form
+http://blog.honeybadger.io/multi-step-forms-in-rails/
+https://devhints.io/rails-models
+https://gist.github.com/rstacruz/1569572
+https://github.com/franzejr/best-ruby/blob/master/README.md
+http://eewang.github.io/blog/2013/11/14/useful-tips-and-tricks-for-building-a-rails-app/
+http://railsgirls.org
+http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html
+https://stackoverflow.com/questions/29111129/rails-4-drop-down-select-list-different-model
+https://medium.com/@oliviazyc/complex-nesting-forms-in-rails-631b369be0de
+https://stackoverflow.com/questions/39682727/how-to-save-a-nested-resource-in-activerecord-using-a-single-form-ruby-on-rails
+https://stackoverflow.com/questions/32151405/ruby-on-rails-save-form-data-of-one-model-in-relation-to-another-model
+Nested Attributes crud complex 2 model and more
+https://www.createdbypete.com/articles/working-with-nested-forms-and-a-many-to-many-association-in-rails-4/
+http://fairwaytech.com/2013/01/rails-3-2-a-nested-form-demo-part-1-all-wings-report-in/
+http://laptite.github.io/blog/2014/02/26/deep-nesting-with-has-many-through-and-a-join-model/
+www.sitepoint.com/complex-rails-forms-with-nested-attributes
+https://robots.thoughtbot.com/accepts-nested-attributes-for-with-has-many-through
+http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html
+https://github.com/nathanvda/cocoon/wiki/A-guide-to-doing-nested-model-forms
+https://stackoverflow.com/questions/2249160/nested-forms-in-rails-accessing-attribute-in-has-many-relation
+triple nested form
+https://medium.com/@mindovermiles262/triple-nested-forms-in-rails-dedbcccb5799
+https://coderwall.com/p/jzofog/ruby-on-rails-flash-messages-with-bootstrap
+https://rubyplus.com/episodes/101-Ajax-using-jQuery-in-Rails-5
+
+11:50
+
+Ruby Snack #11: Nested Forms Part 4: Has Many ThroughApl YouTube - 16 Jul 2015
